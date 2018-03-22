@@ -117,7 +117,7 @@ public class DPPSBStoreToCassandra {
 			
 			boundStatement = new BoundStatement(prepare_statement);
 			session.execute(boundStatement.bind(userName,
-					userDetails.getFriendList()));
+					userDetails.getFriendList().toString()));
 			
 			insertFriendsDetails(userDetails); //to insert friend details
 			
@@ -125,7 +125,7 @@ public class DPPSBStoreToCassandra {
 	         * insert followers name as list
 	         */
 			
-			prepare_statement = session.prepare("insert into kdstest.follower_list (screen_name, followers) values (?,?)");
+			prepare_statement = session.prepare("insert into kdstest.follower_list (user_screen_name, followers) values (?,?)");
 	        boundStatement = new BoundStatement(prepare_statement);
 	        session.execute(boundStatement.bind(userName,
 	                userDetails.getFollowerList()));
