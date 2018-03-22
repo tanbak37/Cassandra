@@ -40,23 +40,9 @@ public class DPPSBReadTweets {
 	        DPPSBReadTweets twitterClient = new DPPSBReadTweets();
 	        storeToCassandra = new DPPSBStoreToCassandra();
 	        
-	      
-	        /**
-	         * load the properties files
-	         */
 	        
-	        Properties properties = twitterClient
-	                .loadProperties("twitterCredentials");
-	        storeToCassandra.properties = twitterClient.loadProperties("queries");
-	        /**
-	         * Assigning to the variables
-	         */
-	        oauthAccessToken = properties.getProperty("oauthAccessToken");
-	        oauthAccessTokenSecret = properties
-	                .getProperty("oauthAccessTokenSecret");
-	        consumerKey = properties.getProperty("consumerKey");
-	        consumerSecret = properties.getProperty("consumerSecret");
-	 
+	  
+	        //storeToCassandra.connectToCassandra();
 	        twitterClient.process();
 	        
 	  }

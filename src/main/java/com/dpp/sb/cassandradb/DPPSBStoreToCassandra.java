@@ -145,7 +145,7 @@ public class DPPSBStoreToCassandra {
 		        for (DPPGNFriendDetails fd : userDetails.getFriendsList()) {
 		        	
 		        	prepare_statement = session
-		                    .prepare("insert into  friend_details (user_screen_name,friend_screen_name, friend_user_name , location , twitter_id , created_date , url ) values (?,?,?,?,?,?,?);");
+		                    .prepare("insert into friend_details (user_screen_name,friend_screen_name, friend_user_name , location , twitter_id , created_date , url ) values (?,?,?,?,?,?,?);");
 		            boundStatement = new BoundStatement(prepare_statement);
 		            session.execute(boundStatement.bind(userName, fd.getScreen_name(),
 		                    fd.getUserName(), fd.getLocation(), fd.getTweetID(),
