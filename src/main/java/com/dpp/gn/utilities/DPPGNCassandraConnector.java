@@ -8,7 +8,7 @@ import com.datastax.driver.core.Host;
 import com.datastax.driver.core.Metadata;
 import com.datastax.driver.core.Session;
 import com.dpp.sb.cassandradb.DPPSBCassandraDB;
-import com.dpp.sb.fbintegration.*;
+
 
 public class DPPGNCassandraConnector {
 	private Cluster cluster;
