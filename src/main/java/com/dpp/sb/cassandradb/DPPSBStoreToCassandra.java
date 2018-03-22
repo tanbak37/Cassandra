@@ -26,17 +26,19 @@ public class DPPSBStoreToCassandra {
 	
 	public void connectToCassandra() {
 		
-		try {
+		//try {
 		
-		cluster = Cluster.builder().addContactPoint(properties.getProperty("NODE"))
-				.build();
-		session = cluster.connect(properties.getProperty("keyspaceName"));
+		cluster = Cluster.builder().addContactPoints("localhost")
+	                .build();
+		session = cluster.connect("9042");
 		System.out.println("CONNECTED");
 		
-		} catch (Exception e) {
-			System.out.println("ERROR NOT CONNECT");
+		} 
 		
-	}}
+		//catch (Exception e) {
+			//System.out.println("ERROR NOT CONNECT");
+		
+	
 	
 		 /**
 	     * @param userDetails
