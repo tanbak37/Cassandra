@@ -10,9 +10,9 @@ import com.datastax.driver.core.Host;
 import com.datastax.driver.core.Metadata;
 import com.datastax.driver.core.PreparedStatement;
 import com.datastax.driver.core.Session;
-import com.dpp.gn.model.DPPGNFriendDetails;
-import com.dpp.gn.model.DPPGNTweet;
-import com.dpp.gn.model.DPPGNUserDetails;
+import com.dpp.gn.model.tw.DPPGNFriendDetails;
+import com.dpp.gn.model.tw.DPPGNTweet;
+import com.dpp.gn.model.tw.DPPGNUserDetails;
 
 
 

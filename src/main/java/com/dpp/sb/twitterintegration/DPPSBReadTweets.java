@@ -11,16 +11,15 @@ import java.util.Properties;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.dpp.gn.model.tw.DPPGNFriendDetails;
+import com.dpp.gn.model.tw.DPPGNTweet;
+import com.dpp.gn.model.tw.DPPGNUserDetails;
 import com.dpp.sb.cassandradb.DPPSBStoreToCassandra;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.User;
 import twitter4j.conf.ConfigurationBuilder;
-
-import com.dpp.gn.model.DPPGNFriendDetails;
-import com.dpp.gn.model.DPPGNTweet;
-import com.dpp.gn.model.DPPGNUserDetails;
 
 
 

@@ -1,4 +1,4 @@
-package com.dpp.gn.model;
+package com.dpp.gn.model.tw;
 
 import java.util.Date;
 import java.util.LinkedList;
