@@ -12,7 +12,14 @@ import com.datastax.driver.core.PreparedStatement;
 import com.datastax.driver.core.Session;
 import com.dpp.gn.model.tw.DPPGNFriendDetails;
 import com.dpp.gn.model.tw.DPPGNTweet;
+import com.dpp.gn.model.fb.DPPGNLikeFacebook;
+import com.dpp.gn.model.fb.DPPGNMusicFacebook;
+import com.dpp.gn.model.fb.DPPGNFeedFacebook;
+import com.dpp.gn.model.fb.DPPGNVideoFacebook;
+import com.dpp.gn.model.fb.DPPGNMovieFacebook;
+import com.dpp.gn.model.fb.DPPGNUserFacebook;
 import com.dpp.gn.model.tw.DPPGNUserDetails;
+import com.dpp.gn.utilities.KeyConstants;
 
 
 
@@ -26,7 +33,7 @@ public class DPPSBStoreToCassandra {
      * konek ke cassandra
      */
 	
-	public void connectToCassandra(final String node, final int port) {
+	public void connectToCassandraTW(final String node, final int port) {
 		
 		//try {
 		   {
@@ -49,10 +56,15 @@ public class DPPSBStoreToCassandra {
 
 			      session = cluster.connect();
 		   }
+	}
 		
 		
-		
-		
+    public void connectToCassandraFB() {
+        cluster = Cluster.builder().addContactPoints(KeyConstants.HOST_CASSANDRA)
+                .build();
+        session = cluster.connect(KeyConstants.KEY_SPACE_NAME);
+        System.out.println("CONNECTED !! ! ");
+    }
 		
 		
 		
@@ -73,7 +85,7 @@ public class DPPSBStoreToCassandra {
 		System.out.println("CONNECTED");  
 		*/
 		
-		} 
+		 
 		
 		//catch (Exception e) {
 			//System.out.println("ERROR NOT CONNECT");
@@ -217,13 +229,148 @@ public class DPPSBStoreToCassandra {
 		                    fd.getScreen_name()));
 		        	*/
 		        }
-		
-		
-	
-		
-		
+		 }
+		 
+		 
+		 /* insert profile facebook with params
+		  * idn,name,locationid,agerange,devices,getfirstname,getmiddlename
+		  * ,getlastname,gender,url,shorname,nameformat
+		  * 
+		  * butuh method insertfeed facebook,insertlikefb,insertmovie,insertvideo
+		  */
+		 
+		 public void insertProfileFB(DPPGNUserFacebook userFacebook) throws Exception {
+		        BoundStatement boundStatement = null;
+		        PreparedStatement prepare_statement = null;
 
-	}
+		        prepare_statement = session
+		        		.prepare("insert into kdstest.fbuser "
+		        				+ "(id, name , location_id, location, age_range, device, first_name, "
+		        				+ "middle_name, last_name, gender, url, short_name, name_format) "
+		        				+ "values (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+		        boundStatement = new BoundStatement(prepare_statement);
+		        session.execute(boundStatement.bind(
+		        		userFacebook.getId(),
+		        		userFacebook.getName(),
+		        		userFacebook.getLocationId(),
+		        		userFacebook.getLocation(),
+		        		userFacebook.getAgeRange(),
+		        		userFacebook.getDevice().toString(),
+		        		userFacebook.getFirstName(),
+		        		userFacebook.getMiddleName(),
+		        		userFacebook.getLastName(),
+		        		userFacebook.getGender(),
+		        		userFacebook.getUrl(),
+		        		userFacebook.getShortName(),
+		        		userFacebook.getNameFormat()));
+		        
+		        insertFeedFB(userFacebook);	  
+		        insertLikeFB(userFacebook);
+		        insertMovieFB(userFacebook);
+		        insertMusicFB(userFacebook);
+		        insertVideoFB(userFacebook);
+		    }
+		 
+		 public void insertFeedFB(DPPGNUserFacebook userFacebook) throws Exception {
+		        BoundStatement boundStatement = null;
+		        PreparedStatement prepare_statement = null;
+
+		        for (DPPGNFeedFacebook feed : userFacebook.getListfeed()) {
+			        prepare_statement = session
+			        		.prepare("insert into kdstest.fbfeed "
+			        				+ "(id, message, story, created_date, facebook_id, screen_name) "
+			        				+ "values (?,?,?,?,?,?)");
+			        boundStatement = new BoundStatement(prepare_statement);
+			        session.execute(boundStatement.bind(
+			        		feed.getId(),
+			        		feed.getMessage(),
+			        		feed.getStory(),
+			        		feed.getCreatedDate(),
+			        		feed.getFacebookId(),
+			        		feed.getScreenName()));	
+		        }
+		    }
+		 
+		 public void insertLikeFB(DPPGNUserFacebook userFacebook) throws Exception {
+		        BoundStatement boundStatement = null;
+		        PreparedStatement prepare_statement = null;
+
+		        for (DPPGNLikeFacebook like : userFacebook.getListlike()) {
+			        prepare_statement = session
+			        		.prepare("insert into kdstest.fblikes "
+			        				+ "(id, name, created_date, facebook_id, screen_name) "
+			        				+ "values (?,?,?,?,?)");
+			        boundStatement = new BoundStatement(prepare_statement);
+			        session.execute(boundStatement.bind(
+			        		like.getId(),
+			        		like.getName(),
+			        		like.getCreatedDate(),
+			        		like.getFacebookId(),
+			        		like.getScreenName()));	
+		        }
+		    }
+		 
+		 public void insertMovieFB(DPPGNUserFacebook userFacebook) throws Exception {
+		        BoundStatement boundStatement = null;
+		        PreparedStatement prepare_statement = null;
+
+		        for (DPPGNMovieFacebook movie : userFacebook.getListmovie()) {
+			        prepare_statement = session
+			        		.prepare("insert into kdstest.fbmovies "
+			        				+ "(id, name, created_date, facebook_id, screen_name) "
+			        				+ "values (?,?,?,?,?)");
+			        boundStatement = new BoundStatement(prepare_statement);
+			        session.execute(boundStatement.bind(
+			        		movie.getId(),
+			        		movie.getName(),
+			        		movie.getCreatedDate(),
+			        		movie.getFacebookId(),
+			        		movie.getScreenName()));	
+		        }
+		    }
+		 
+		 public void insertMusicFB(DPPGNUserFacebook userFacebook) throws Exception {
+		        BoundStatement boundStatement = null;
+		        PreparedStatement prepare_statement = null;
+
+		        for (DPPGNMusicFacebook music : userFacebook.getListmusic()) {
+			        prepare_statement = session
+			        		.prepare("insert into kdstest.fbmusic "
+			        				+ "(id, name, created_date, facebook_id, screen_name) "
+			        				+ "values (?,?,?,?,?)");
+			        boundStatement = new BoundStatement(prepare_statement);
+			        session.execute(boundStatement.bind(
+			        		music.getId(),
+			        		music.getName(),
+			        		music.getCreatedDate(),
+			        		music.getFacebookId(),
+			        		music.getScreenName()));	
+		        }
+		    }
+		 
+		 public void insertVideoFB(DPPGNUserFacebook userFacebook) throws Exception {
+		        BoundStatement boundStatement = null;
+		        PreparedStatement prepare_statement = null;
+
+		        for (DPPGNVideoFacebook video : userFacebook.getListvideo()) {
+			        prepare_statement = session
+			        		.prepare("insert into kdstest.fbvideos "
+			        				+ "(id, description, updated_time, facebook_id, screen_name) "
+			        				+ "values (?,?,?,?,?)");
+			        boundStatement = new BoundStatement(prepare_statement);
+			        session.execute(boundStatement.bind(
+			        		video.getId(),
+			        		video.getDescription(),
+			        		video.getUpdatedTime(),
+			        		video.getFacebookId(),
+			        		video.getScreenName()));	
+		        }
+		    }
+		 
+		 
+		 
+		 
+		 
 		 
 		 /**
 		     * Disconnecting with Cassandra

@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,11 +18,9 @@ import com.dpp.gn.model.fb.DPPGNLikeFacebook;
 import com.dpp.gn.model.fb.DPPGNMovieFacebook;
 import com.dpp.gn.model.fb.DPPGNMusicFacebook;
 import com.dpp.gn.model.fb.DPPGNVideoFacebook;
-import com.dpp.gn.model.fb.FeedFacebook;
-import com.dpp.gn.model.fb.LikeFacebook;
 import com.dpp.gn.utilities.KeyConstants;
 import com.dpp.sb.cassandradb.DPPSBCassandraDB;
-
+import com.dpp.sb.cassandradb.DPPSBStoreToCassandra;
 
 import com.dpp.gn.utilities.DPPGNCassandraConnector;
 
@@ -33,9 +32,14 @@ import org.json.JSONObject;
 
 public class DPPSBFBClientGet {
 	
+	public static DPPSBStoreToCassandra storeToCassandra = null;
+	
 	
 
-	public static void main(String[] args) {
+	public void process() throws Exception {
+		
+		storeToCassandra = new DPPSBStoreToCassandra();
+	
 
 		try {
 			URL url = new URL(KeyConstants.URL_PERSONAL_FB + KeyConstants.ACCESS_TOKEN_FB);
@@ -71,7 +75,7 @@ public class DPPSBFBClientGet {
 				user.setId(object.getString("id"));
 				user.setName(object.getString("name"));
 				user.setFirstName(object.getString("first_name"));
-				user.setMiddleName(object.getString("middle_name"));
+				//user.setMiddleName(object.getString("middle_name"));
 				user.setLastName(object.getString("last_name"));
 				user.setGender(object.getString("gender"));
 				user.setUrl(object.getString("gender"));
@@ -144,26 +148,58 @@ public class DPPSBFBClientGet {
 					
 					user.setListlike(listlike);
 					
-			}
+					/* get data movie  object --> array data */
 					
+					JSONObject music = object.getJSONObject("music");
+					JSONArray datalistmusic = music.getJSONArray("data");
+					for (int x=0; x < datalistmusic.length(); x++) {
+						JSONObject datamusic = datalistmusic.getJSONObject(x);
+						
+						DPPGNMusicFacebook musicFacebook = new DPPGNMusicFacebook();
+						
+						musicFacebook.setFacebookId(object.getString("id"));
+						musicFacebook.setScreenName(object.getString("name"));
+						musicFacebook.setId(object.getString("id"));
+						musicFacebook.setCreatedDate(formatdate.parse(datamusic.getString("created_time")));
+						listmusic.add(musicFacebook);
+					}
+					user.setListmusic(listmusic);
 					
-					String created_time = data.getString("created_time");
-					String id = data.getString("id");
-					System.out.println("id :"+id);
-					System.out.println("message :"+message);
-					System.out.println("story :"+story);
-					System.out.println("created_time"+created_time);
-					System.out.println("*******************************************************************************");
-					System.out.println(" \n");
+					/*    get data videos  ---> */
 					
-					/*******  Insert DataBase Cassandra  *****/
-		
-					DPPGNCassandraConnector.connectAndInsert(id, message, story, created_time);
+					/*user.setListmusic(listmusic);
 					
-					/*****************************************/
-				}
+					JSONObject videos = object.getJSONObject("videos");
+					JSONArray listvideosdata = videos.getJSONArray("data");
+					for (int x=0; x < listvideosdata.length(); x++) {
+						JSONObject videosdata = listvideosdata.getJSONObject(x);
+						
+						VideoFacebook videosFacebook = new VideoFacebook();
+						
+						videosFacebook.setFacebookId(object.getString("id"));
+						videosFacebook.setScreenName(object.getString("name"));
+						videosFacebook.setId(videosdata.getString("id"));
+						try {
+							videosFacebook.setDescription(videosdata.getString("description"));	
+						} catch (Exception e) {}
+						try {
+							videosFacebook.setUpdatedTime(formatter.parse(videosdata.getString("updated_time")));	
+						} catch (Exception e) {}
+						listvideo.add(videosFacebook);
+					}
+					
+					user.setListvideo(listvideo);*/					
+					
+			
 			}
 			
+			System.out.println("******* End Processs**************");
+		
+			
+			storeToCassandra.connectToCassandraFB();
+			storeToCassandra.insertProfileFB(user);
+			storeToCassandra.disconnetFromCassandra();
+		
 			conn.disconnect();
 
 		} catch (MalformedURLException e) {

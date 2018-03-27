@@ -125,7 +125,7 @@ public class DPPSBReadTweets {
 	            userDetails.setFriendList(friendsName);
 	            System.out.println("FOLLOWERS ********");
 	     
-	            storeToCassandra.connectToCassandra("localhost", 9042); //
+	            storeToCassandra.connectToCassandraTW("localhost", 9042); //
 	            storeToCassandra.insertUserDetails(userDetails); //
 	            storeToCassandra.disconnetFromCassandra();
 	        }
@@ -153,7 +153,7 @@ public class DPPSBReadTweets {
 	            }
 	            userDetails.setFollowersList(followerList);
 	            userDetails.setFollowerList((followersName)); //
-	            storeToCassandra.connectToCassandra("localhost", 9042); //
+	            storeToCassandra.connectToCassandraTW("localhost", 9042); //
 	            storeToCassandra.insertUserDetails(userDetails); //
 	            storeToCassandra.disconnetFromCassandra();
 	     

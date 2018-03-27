@@ -3,7 +3,11 @@ package com.dpp.gn.utilities;
 public interface KeyConstants {
 	
 	
-	static final String ACCESS_TOKEN_FB = "EAACEdEose0cBAKAXHLhBze9pSHtSHgr45irmD3uUNZBqGFee6znEvPeAvZBwF7h3cweCuH89Ooq7EZBQqZCZB67K97ZCbAfzw7jJxPpHSSsA4qNhHHLTIdPzSdEOK2cAfZAYylivrq5sDi6jmpRlvkx7ul7oYw0RMoYpNS84YFLKUvmfAJpJyJzjeyVHm1h2L0ZD";
+	static final String HOST_CASSANDRA = "localhost";
+	static final int PORT_CASSANDRA = 9042;
+	static final String KEY_SPACE_NAME = "kdstest";
+	
+	static final String ACCESS_TOKEN_FB = "EAACEdEose0cBAMorizh4EUsrDIaSKmCw2gEDuEOLD8X1mFnDnypWzROV9LTu5A9CXu5h6IQomXzgRYlqyhmCRNW26xMiRM7CXUfXesC9PSuZCHGY3kbBUbvGzMtKsu1OczhqyvM4W68Il9wvw93dI8svfs8OA3DWAfg3urkyOBVA8U6Aqlz0YUn4IqWUZD";
 	static final String URL_PERSONAL_FB = "https://graph.facebook.com/v2.11/me?fields=id,name,location,age_range,devices,first_name,middle_name,last_name,feed,gender,hometown,link,video_upload_limits,likes,movies,music,short_name,name_format,videos&access_token=";
 	static final String URL_POST_FB = "https://graph.facebook.com/me/posts?access_token=";
 	static final String CONSUMER_KEY_STR = "CPmLmjUTjTunphmskTw7kI0kc";

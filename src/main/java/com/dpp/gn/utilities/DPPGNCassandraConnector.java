@@ -32,7 +32,7 @@ public class DPPGNCassandraConnector {
 	       final int port = 9042;
 	       System.out.println("Connecting to IP Address " + ipAddress + ":" + port + "...");
 	       client.connect(ipAddress, port);
-	       DPPSBCassandraDB.insertPostsFB(id, message, story, created_time, client);
+	       //DPPSBCassandraDB.insertPostsFB(id, message, story, created_time, client);
 	       
 	       client.getSession().close();
 	   

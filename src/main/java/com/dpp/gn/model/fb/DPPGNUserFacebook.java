@@ -9,6 +9,7 @@ public class DPPGNUserFacebook {
 	
 	String id;
 	String name;
+	String location;
 	String locationId;
 	String locationName;
 	Integer ageRange;
@@ -29,6 +30,12 @@ public class DPPGNUserFacebook {
 	
 	
 	
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
 	public List<String> getDevice() {
 		return device;
 	}
